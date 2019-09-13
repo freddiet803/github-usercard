@@ -121,7 +121,18 @@ makeUserCard = async url => {
     let res = await axios.get(url);
     theCards.appendChild(createUserCard(res.data));
     console.log(res);
-    return res;
+    let followersArrayURL = res.data.followers_url;
+
+    let res2 = await axios.get(followersArrayURL);
+    res2.data.forEach(user => {
+      theCards.appendChild(createUserCard(user));
+    });
+    console.log(res2);
+    // f.forEach(user => {
+    //   theCards.appendChild(createUserCard(user));
+    // });
+    console.log(followersArrayURL);
+    return res, res2;
   } catch (err) {
     console.log(err);
   }
@@ -138,6 +149,6 @@ let awaitCards = makeUserCard('https://api.github.com/users/freddiet803');
   bigknell
 */
 
-followersArray.forEach(user => {
-  makeUserCard('https://api.github.com/users/' + user);
-});
+// followersArray.forEach(user => {
+//   makeUserCard('https://api.github.com/users/' + user);
+// });
