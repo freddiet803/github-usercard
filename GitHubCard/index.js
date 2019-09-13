@@ -121,18 +121,35 @@ makeUserCard = async url => {
     let res = await axios.get(url);
     theCards.appendChild(createUserCard(res.data));
     console.log(res);
-    let followersArrayURL = res.data.followers_url;
+    let followersURL = res.data.followers_url;
 
-    let res2 = await axios.get(followersArrayURL);
+    let res2 = await axios.get(followersURL);
+    let followersOwnProfile = [];
     res2.data.forEach(user => {
-      theCards.appendChild(createUserCard(user));
+      followersOwnProfile.push(user.url);
+      //console.log(followersOwnProfile);
+      //theCards.appendChild(createUserCard(res3.data));
+      //theCards.appendChild(createUserCard(user));
+    });
+
+    followersOwnProfile.forEach(user => {
+      makeFollowerUser(user);
     });
     console.log(res2);
     // f.forEach(user => {
     //   theCards.appendChild(createUserCard(user));
     // });
-    console.log(followersArrayURL);
+    console.log(followersURL);
     return res, res2;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+makeFollowerUser = async url => {
+  try {
+    let res3 = await axios.get(url);
+    theCards.appendChild(createUserCard(res3.data));
   } catch (err) {
     console.log(err);
   }
